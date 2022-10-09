@@ -1,0 +1,47 @@
+<head>
+<meta name="dj4e" content="ede043feac5821daca308b5cb0f04c64">
+</head>
+
+{% extends "base_menu.html" %}
+
+{% block content %}
+
+    <div class="jumbotron jumbotron-fluid">
+    <div class="container-fluid">
+    <h1>Welcome to my first Website</h1>
+    <p>
+    <br>
+    This website was designed as part of the DjangoForEverybody course
+    where I got to build my own CRUD applications with the help of course examples.
+    Feel free to look around and test all the apps.
+    </p>
+    <br>
+    <p><a class="btn btn-primary btn-lg" href="https://www.dj4e.com/" target="_blank" role="button" >More info on the course &raquo;</a></p>
+    </div>
+    </div>
+
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Course Apps</h2>
+            <p>The course apps were already fully implemented. They are simple examples that are meant to help the course learner understand the purpose of each line in each file.
+            All apps are available in the 'Course Examples' menu.
+            </p>
+            <p><a class="btn btn-secondary" href="{% url 'autos:all' %}" role="button">Get started with this Autos CRUD &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>My Apps</h2>
+            <p>You can also find my own apps on this website, which were given as projects during the course. Most of them are quite basic and were mainly used to show how the Django files work together and communicate with the database.<br>
+            The final project for the course was the Ads app, which allows to upload an ad for an item with a price, description and a photo. You can favorite ads and look up ad names if you are looking for one in particular. If you try clicking on everything, you might find a fun page.
+            <br> All my apps are available in the 'My Implementations' menu.
+            </p>
+            <p><a class="btn btn-secondary" href="{% url 'ads:all' %}" role="button">Go to Ads app &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Source Code</h2>
+            <p>All Django and html source code from this website is available on my 'django-projects' Github repositery. Most of the code available is adapted from the DjangoForEverybody course examples which are free of access so you can use it all you want. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">Access source code on Github &raquo;</a></p>
+          </div>
+        </div>
+{% endblock content %}

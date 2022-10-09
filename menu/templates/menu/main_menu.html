@@ -1,0 +1,16 @@
+<head>
+<meta name="dj4e" content="6ad4ba33df5bd3abe7bac00c420c5b6c">
+</head>
+
+{% extends 'menu/base_menu.html' %}
+{% block title %}{{ settings.APP_NAME }}{% endblock %}
+{% block content %}
+<h4>I am the content block in templates/menu/main_menu.html</h4>
+<p>
+This is your current path : {{ request.path }}
+</p>
+<p>
+If you are lost, head back to the <a href="/">main page</a> or click Home.
+</p>
+{% endblock %}
+

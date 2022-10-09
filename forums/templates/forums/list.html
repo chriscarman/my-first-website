@@ -1,0 +1,36 @@
+<head>
+<meta name="dj4e" content="6ad4ba33df5bd3abe7bac00c420c5b6c">
+</head>
+
+{% extends "base_menu.html" %}
+{% block content %}
+<div class="container-fluid">
+<h1>Forums</h1>
+<p>
+{% if forum_list %}
+<ul>
+  {% for forum in forum_list %}
+    <li>
+        <a href="{% url 'forums:forum_detail'  forum.id %}">{{ forum.title }}</a>
+        {% if forum.owner == user %}
+        (<a href="{% url 'forums:forum_update' forum.id %}">Edit</a> |
+        <a href="{% url 'forums:forum_delete' forum.id %}">Delete</a>)
+        </p>
+        {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>There are no forums in the database.</p>
+{% endif %}
+</p>
+<p>
+<a href="{% url 'forums:forum_create' %}">Add a Forum</a> |
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'forums:all' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'forums:all' %}">Login</a>
+{% endif %}
+</p>
+</div>
+{% endblock %}
