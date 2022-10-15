@@ -176,7 +176,7 @@ var Player =  function(){
 
         var grounded = 0;
         if(p1-12 > this.y){
-            this.ySpeed += 0.18;
+            this.ySpeed += 0.21;
         }else{
             this.ySpeed -= this.y - (p1-11.8);
             this.y = p1 - 12;
@@ -184,7 +184,7 @@ var Player =  function(){
         }
 
         var angle = Math.atan2((p2-12) - this.y, (this.x+6) - this.x);
-        this.y += this.ySpeed;
+        this.y += 0.9*this.ySpeed;
 
         if(!playing || grounded && Math.abs(this.rot) > Math.PI * 0.5){
             playing = false;
@@ -253,10 +253,10 @@ function loop(){
     ctx.fill();
 
     ctx.fillStyle = "white";
-    ctx.font = "25px Verdana";
-    ctx.fillText("Go", c.width/7.5, c.height/10, buttons[0].width/2);
-    ctx.fillText("Pull",c.width/1.6, c.height/10, buttons[1].width/1.7);
-    ctx.fillText("Push",c.width/1.18, c.height/10, buttons[2].width/1.5);
+    ctx.font = "138%  Verdana";
+    ctx.fillText("Go", c.width/8, c.height/9, c.width/2);
+    ctx.fillText("Pull",c.width/1.75, c.height/9, buttons[1].width/1.7);
+    ctx.fillText("Push",c.width/1.26, c.height/9, buttons[2].width/1.5);
 
 
     player.draw();
@@ -297,5 +297,4 @@ loop();
 
 <!--https://codingshiksha.com/javascript/build-a-mountain-motocross-madness-bike-riding-game-in-browser-using-html5-css3-and-javascript-full-project-for-beginners/-->
 <!--https://github.com/pothonprogramming/pothonprogramming.github.io/blob/master/content/touch-controller/touch-controller.js-->
-
 
