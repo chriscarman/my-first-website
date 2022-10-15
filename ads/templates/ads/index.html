@@ -17,12 +17,132 @@
 <template>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAXCAYAAAD+4+QTAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAALfSURBVEhLrVVLaBRBEN2NoqirB1Hw4MGD+ImHYNQQdme2IdMz09s9CfgZD56CQREPgmJAEFn1JniSIIIaPHjRg168CYoEQYwa/AYvXvwgRhEFxQ9ZfdXTO3F3Zpc1yYNH73ZVvaqu/kymGdrDcB6Nlls6ZHE5brtquNvzlmrjbMHmwT6IX4b4n5hc3YMpG3nMEMzrXQ3RqzUJIlaKjtho3KYP25UDWMHP+gSWq0a7hFgyKy2D4Gh9AiK1zrjMDIwFy9D3L7GwK9+AD6Pf6gXGY/m+vsXGfXqwuTwVJ+DyIiXFdLbgqq1I/gDzFV0EV2MFT3VEUf8JiDyPkshfYD9jLGdMGkzKFbC/jIpQdywhlhtT60BLbkRJ4nZ9xni8u3vHAuOSKXK5EwU8NvbTZrp1MBbm0KajCJ6oScbVXZj1/Sg6wRbbkQp+r7TNKwU03wxZ9HY3XTwE77IcKWw/6LSc0hokOog9ehYncuV+/L9Ge4IEk0j8w8zfpziscJvdE3SWy+U2oz0FIcR8xkubbU8eqQpqkpArP9bMNaBOxOUQHRa0coRaauRr4bruIuzJ7zSRRoToU4wVOiRGhpCtvnupQAvO1Qs1Y546gBaiuNebgmChkWmINuYF62xPddlu4GH5B1DdMIRQZXoC+Ewgjva0A/8rSHQFK7uE8bztlLaTTSsTir6y4aTPviZXnyxP7SUbEg3E8wnKm+RD7xk68C5h5+o67tncTMHv3YDlfks4gFQZ3eyEjcvvWMV7CA+ZQs4mfKrk8jD2oO57kWTULi6/IuEHCN7G6NPNpzaFYThH25Jxmij0CT0jU21KI849juP6Rt8QeixT46pEYfSMPEo1aspJ6rfRa4Qs/N6mxxPlCK3kRNIQ85YRagoIDabEatIrgLeK5VJXQyesR7QbnebAMwL/M4j757jTl1UOGo/4UTwJxzGM4zg1F5jvrzLmlpH3/bWI3QPxfibEymg2k/kLGmgFj+yZMV8AAAAASUVORK5CYII</template>
 <!-- partial -->
   <script>
-    var c = document.createElement("canvas");
+var c = document.createElement("canvas");
 var ctx = c.getContext("2d");
 c.style.display= 'block';
 c.style.margin= 'auto';
 c.width = 720;
 c.height = 480;
+bounding_rectangle = undefined;
+
+var Button = function(x, y, width, height, color) {
+
+    this.active = false;
+    this.color = color;
+    this.height = height;
+    this.width = width;
+    this.x = x;
+    this.y = y;
+}
+
+  Button.prototype = {
+
+    // returns true if the specified point lies within the rectangle:
+    containsPoint:function(x, y) {
+
+      // if the point is outside of the rectangle return false:
+      if (x < this.x || x > this.x + this.width || y < this.y || y > this.y + this.height) {
+
+        return false;
+
+      }
+
+      return true;
+
+    }
+
+    };
+
+var testButtons = function(target_touches) {
+    buttons = [
+        new Button(0,0, c.width/2.5, c.height, "#f09000"),
+        new Button(c.width/2.5, 0, c.width/2.7, c.height, "#0090f0"),
+        new Button(c.width/1.3, 0, c.width/4.4, c.height, "#0090f0")
+    ];
+      // loop through all buttons:
+      for (index0 = buttons.length - 1; index0 > -1; -- index0) {
+
+        button = buttons[index0];
+        button.active = false;
+
+        // loop through all touch objects:
+        for (index1 = target_touches.length - 1; index1 > -1; -- index1) {
+          touch = target_touches[index1];
+
+          // make sure the touch coordinates are adjusted for both the canvas offset and the scale ratio of the buffer and output canvases:
+          if (button.containsPoint((touch.clientX-bounding_rectangle.left),
+          (touch.clientY-bounding_rectangle.top))) {
+
+            button.active = true;
+            break;// once the button is active, there's no need to check if any other points are inside, so continue
+
+          }
+
+        }
+
+      }
+    if (buttons[0].active) {
+        k.ArrowUp = 1;
+        console.log('Go');
+      }
+    if (buttons[0].active == false) {
+        k.ArrowUp = 0;
+      }
+    if (buttons[1].active) {
+        k.ArrowLeft = 1;
+        console.log('Pull');
+      }
+    if (buttons[1].active == false) {
+        k.ArrowLeft = 0;
+      }
+    if (buttons[2].active) {
+        k.ArrowRight = 1;
+        console.log('Push');
+      }
+    if (buttons[2].active == false) {
+        k.ArrowRight = 0;
+      }
+    };
+
+var touchEnd = function(event) {
+
+      event.preventDefault();
+      testButtons(event.touches);
+
+    };
+
+var touchMove = function(event) {
+
+      event.preventDefault();
+      testButtons(event.touches);
+
+    };
+
+var touchStart = function(event) {
+
+      event.preventDefault();
+      testButtons(event.touches);
+
+    };
+
+var resize = function(event) {
+    restart();
+
+    c.width = Math.floor(document.documentElement.clientWidth - 32);
+
+    if (c.width > document.documentElement.clientHeight) {
+
+        c.width = Math.floor(document.documentElement.clientHeight);
+    }
+
+    c.height = Math.floor(c.width * 0.6);
+
+    // these next two lines are used for adjusting and scaling user touch input coordinates:
+    bounding_rectangle = c.getBoundingClientRect();
+
+
+
+    }
 
 
 document.body.appendChild(c);
@@ -43,7 +163,7 @@ var noise = x=>{
 }
 
 var Player =  function(){
-    this.x = c.width/2;
+    this.x = c.width/4;
     this.y = 0;
     this.ySpeed = 0;
     this.rot = 0;
@@ -91,11 +211,26 @@ var Player =  function(){
 }
 
 var player = new Player();
+var size = resize();
 var t = 0;
 var speed = 0;
 var playing = true;
 var k = {ArrowUp:0, ArrowDown:0, ArrowLeft:0, ArrowRight:0};
 function loop(){
+
+
+    buttons = [
+        new Button(0,0, c.width/2.5, c.height, "#f09000"),
+        new Button(c.width/2.5, 0, c.width/2.7, c.height, "#0090f0"),
+        new Button(c.width/1.3, 0, c.width/4.4, c.height, "#0090f0")
+    ];
+    for (index = buttons.length - 1; index > -1; -- index) {
+
+        button = buttons[index];
+        ctx.fillStyle = button.color;
+        ctx.fillRect(button.x, button.y, button.width, button.height);
+    }
+
     speed -= (speed - (k.ArrowUp - k.ArrowDown)) * 0.01;
     t += 10 * speed;
     ctx.fillStyle = "#19f";
@@ -117,6 +252,13 @@ function loop(){
     ctx.lineTo(c.width, c.height);
     ctx.fill();
 
+    ctx.fillStyle = "white";
+    ctx.font = "25px Verdana";
+    ctx.fillText("Go", c.width/7.5, c.height/10, buttons[0].width/2);
+    ctx.fillText("Pull",c.width/1.6, c.height/10, buttons[1].width/1.7);
+    ctx.fillText("Push",c.width/1.18, c.height/10, buttons[2].width/1.5);
+
+
     player.draw();
     if(player.x < 0)
         restart();
@@ -137,6 +279,11 @@ function restart(){
     k = {ArrowUp:0, ArrowDown:0, ArrowLeft:0, ArrowRight:0};
 
 }
+window.addEventListener("resize",resize);
+  // setting passive:false allows you to use preventDefault in event listeners:
+c.addEventListener("touchend",touchEnd, {passive:false});
+c.addEventListener("touchmove",touchMove, {passive:false});
+c.addEventListener("touchstart",touchStart, {passive:false});
 loop();
 
     </script>
@@ -149,6 +296,6 @@ loop();
 {% endblock %}
 
 <!--https://codingshiksha.com/javascript/build-a-mountain-motocross-madness-bike-riding-game-in-browser-using-html5-css3-and-javascript-full-project-for-beginners/-->
-
+<!--https://github.com/pothonprogramming/pothonprogramming.github.io/blob/master/content/touch-controller/touch-controller.js-->
 
 
